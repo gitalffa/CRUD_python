@@ -1,15 +1,15 @@
 import turtle
 
-windows = turtle.Screen()
+window = turtle.Screen()
 tortuga = turtle.Turtle()
-tortuga.forward(100)
-tortuga.right(90)
-tortuga.forward(100)
-tortuga.right(90)
-tortuga.forward(100)
-tortuga.right(90)
-tortuga.forward(100)
-tortuga.right(90)
+
+def make_square(forward, left):
+    i = 0
+    while(i < 4):
+        tortuga.forward(forward)
+        tortuga.left(left)
+        i = i + 1
+    window.mainloop()
 
 
-windows.mainloop()
+make_square(100, 90)
