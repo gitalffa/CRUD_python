@@ -9,6 +9,11 @@ def create_client(client_name):
     else:
         print('Client already is in the client\'s list')
 
+
+def client_not_list():
+    print('Client in not in clients list')
+
+
 def list_clients():
     global clients
 
@@ -21,7 +26,7 @@ def updated_client(client_name,updated_client_name):
     if client_name in clients:
         clients=clients.replace(client_name+',',updated_client_name+',')
     else:
-        print('Client in not in clients list')
+        client_not_list()
 
 
 def delete_client(client_name):
@@ -30,7 +35,7 @@ def delete_client(client_name):
     if client_name in clients:
         clients=clients.replace(client_name +',','')
     else:
-        print('Client is not in clients list')
+        client_not_list()
 
 def _add_comma():
     global clients
