@@ -1,4 +1,4 @@
-clients='pablo,ricardo,fabricio'
+clients='pablo,ricardo,fabricio,'
 
 def create_client(client_name):
     global clients
@@ -66,7 +66,13 @@ def _print_welcome():
 
 
 def _get_client_name():
-    return input('What is the Client name?')
+    client_name=None
+
+    while not client_name:
+        client_name=input('What is the Client name?')
+
+    return client_name
+
 
 
 if __name__=='__main__':
