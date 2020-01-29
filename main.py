@@ -1,3 +1,4 @@
+import sys
 clients='pablo,ricardo,fabricio,'
 
 def create_client(client_name):
@@ -70,6 +71,12 @@ def _get_client_name():
 
     while not client_name:
         client_name=input('What is the Client name?')
+        if client_name=='exit':
+            client_name=None
+            break
+    print('client_name')    
+    if not client_name:
+            sys.exit()
 
     return client_name
 
