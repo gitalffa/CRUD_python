@@ -26,10 +26,9 @@ def _exist_client(client):
 
 
 def create_client(client):
-    if _exist_client(client)==False:
+    
         clients.append(client)
-    else:
-        print('Client already in the client\'s list')
+    
 
 
 def client_not_list():
@@ -119,12 +118,19 @@ if __name__=='__main__':
     command = command.upper();
     if command=='C':
         client={
-            'name':_get_client_field('name'),
-            'company':_get_client_field('company'),
-            'email':_get_client_field('email'),
-            'position':_get_client_field('position')
+            'name':_get_client_name()
         }
-        create_client(client)
+        if _exist_client(client)==False:
+                client={
+                    'name':client[0],
+                    'company':_get_client_field('company'),
+                    'email':_get_client_field('email'),
+                    'position':_get_client_field('position')
+                }
+                create_client(client)
+        else:
+                print('Client already in the client\'s list')
+
         list_clients()
     elif command=='L':
         list_clients()
@@ -141,9 +147,14 @@ if __name__=='__main__':
         else:
             print('The client: {} is not in our client\'s list'.format(client_name))
     elif command =='U':
-        client_name=_get_client_name()
-        updated_client_name=input('What is the updated client name ?')
-        updated_client(client_name,updated_client_name)
-        list_clients()
+        client={
+            'name': _get_client_name()
+        }
+        if _exist_client(client)==False:
+            client_not_list()
+        else:
+            updated_client_name=input('What is the updated client name ?')
+            updated_client(client_name,updated_client_name)
+            list_clients()
     else:
         print('Invalid command')
