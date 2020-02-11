@@ -71,12 +71,13 @@ def delete_client(client_name):
 def search_client(client):
     global clients
     
-    total_clientes=range(len(clients)-1)
+    total_clientes=range(len(clients))
     for x in total_clientes:
-        regreso=clients[x].get(client['name'],-1)
-        if regreso!=-1:
-        	continue
-    
+        if client['name'] in clients[x]['name']:
+            id=x
+            return True,x
+        id=x
+    return False,id
 
 def _print_welcome():
     print('Welcome To Platzi Ventas')
@@ -142,11 +143,9 @@ if __name__=='__main__':
         	'name':_get_client_name()
         	}
 
-        id=search_client(client_name)
-    
-        if id<0:
-        	print('The client: {} is not in our client\'s list'.format(client_name['name']))
-        else:
+        TrueFalse,id=search_client(client_name)
+        print(id)
+        if TrueFalse==True:
             print('The client is in the client\'s list')
             print('{uid}|{name}|{company}|{email}|{position}'.format(
             uid=id,
@@ -156,6 +155,8 @@ if __name__=='__main__':
             position=clients[id]['position'] 
         	)
         	)
+        else:
+            print('The client: {} is not in our client\'s list'.format(client_name['name']))
             
     elif command =='U':
         client={
