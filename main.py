@@ -16,6 +16,7 @@ clients=[
 ]
 
 
+
 def _exist_client(client):
     global clients
     
@@ -65,17 +66,17 @@ def delete_client(client_name):
     else:
         client_not_list()
 
+  
+
+def search_client(client):
+    global clients
     
-def search_client(client_name):
-
-    for client in clients:
-        if client != client_name:
-            continue
-        else:
-            return True
-
-
-
+    total_clientes=range(len(clients)-1)
+    for x in total_clientes:
+        regreso=clients[x].get(client['name'],-1)
+        if regreso!=-1:
+        	continue
+    
 
 def _print_welcome():
     print('Welcome To Platzi Ventas')
@@ -113,20 +114,17 @@ def _get_client_name():
 
 if __name__=='__main__':
     _print_welcome()
-    
     command =input()
     command = command.upper();
     if command=='C':
+    
         client={
             'name':_get_client_name()
         }
-        if _exist_client(client)==False:
-                client={
-                    'name':client[0],
-                    'company':_get_client_field('company'),
-                    'email':_get_client_field('email'),
-                    'position':_get_client_field('position')
-                }
+        if _exist_client(client)==False:    
+                client['company']=_get_client_field('company')
+                client['email']=_get_client_field('email')
+                client['position']=_get_client_field('position')
                 create_client(client)
         else:
                 print('Client already in the client\'s list')
@@ -139,13 +137,26 @@ if __name__=='__main__':
         delete_client(client_name)
         list_clients()
     elif command=='S':
-        client_name=_get_client_name()
-        found=search_client(client_name)
+
+        client_name={
+        	'name':_get_client_name()
+        	}
+
+        id=search_client(client_name)
     
-        if found:
-            print('The client is in the client\'s list')
+        if id<0:
+        	print('The client: {} is not in our client\'s list'.format(client_name['name']))
         else:
-            print('The client: {} is not in our client\'s list'.format(client_name))
+            print('The client is in the client\'s list')
+            print('{uid}|{name}|{company}|{email}|{position}'.format(
+            uid=id,
+            name=clients[id]['name'],
+            company=clients[id]['company'],
+            email=clients[id]['email'],
+            position=clients[id]['position'] 
+        	)
+        	)
+            
     elif command =='U':
         client={
             'name': _get_client_name()
