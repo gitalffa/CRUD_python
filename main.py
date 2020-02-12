@@ -20,14 +20,17 @@ clients=[
 def _exist_client(client):
     global clients
     
-    total_clientes=range(len(clients)-1)
+    total_clientes=range(len(clients))
     for x in total_clientes:
-        if client['name'] not in clients[x]['name']:
-            return False
+        id=x
+        if client['name'] in clients[x]['name']:
+            return True,id
+        else:
+            continue
+    return False,id
 
 
 def create_client(client):
-    
         clients.append(client)
     
 
@@ -37,7 +40,10 @@ def client_not_list():
 
 
 def list_clients():
+    print('|id| |Name| |Company| |Email| |Position|')
+    print('*'*50)
     for idx,client in enumerate(clients):
+        
         print('{uid}|{name}|{company}|{email}|{position}'.format(
             uid=idx,
             name=client['name'],
@@ -48,23 +54,19 @@ def list_clients():
         )
 
 
-def updated_client(client_name,updated_client_name):
+def updated_client(client_name,updated_client_name,id):
+    global clients
+    clients[id]['name']=updated_client_name
+    clients[id]['company']=_get_client_field('company')
+    clients[id]['email']=_get_client_field('email')
+    clients[id]['position']=_get_client_field('position')
+    
+
+
+def delete_client(id):
     global clients
 
-    if client_name in clients:
-        index=clients.index(client_name)
-        clients[index]=updated_client_name
-    else:
-        client_not_list()
-
-
-def delete_client(client_name):
-    global clients
-
-    if client_name in clients:
-        clients.remove(client_name)
-    else:
-        client_not_list()
+    clients.pop(id)
 
   
 
@@ -122,7 +124,8 @@ if __name__=='__main__':
         client={
             'name':_get_client_name()
         }
-        if _exist_client(client)==False:    
+        TrueFalse,id=_exist_client(client)
+        if TrueFalse==False:    
                 client['company']=_get_client_field('company')
                 client['email']=_get_client_field('email')
                 client['position']=_get_client_field('position')
@@ -134,8 +137,15 @@ if __name__=='__main__':
     elif command=='L':
         list_clients()
     elif command=='D':
-        client_name=_get_client_name()
-        delete_client(client_name)
+        client_name={
+            'name':_get_client_name()
+        }
+        TrueFalse,id=_exist_client(client_name)
+        if TrueFalse==True:
+            delete_client(id)
+        else:
+            print('The client: {} is not in our client\'s list'.format(client_name['name']))
+
         list_clients()
     elif command=='S':
 
@@ -144,7 +154,7 @@ if __name__=='__main__':
         	}
 
         TrueFalse,id=search_client(client_name)
-        print(id)
+        
         if TrueFalse==True:
             print('The client is in the client\'s list')
             print('{uid}|{name}|{company}|{email}|{position}'.format(
@@ -162,11 +172,12 @@ if __name__=='__main__':
         client={
             'name': _get_client_name()
         }
-        if _exist_client(client)==False:
+        TrueFalse,id=_exist_client(client)
+        if TrueFalse==False:
             client_not_list()
         else:
             updated_client_name=input('What is the updated client name ?')
-            updated_client(client_name,updated_client_name)
+            updated_client(client,updated_client_name,id)
             list_clients()
     else:
         print('Invalid command')
