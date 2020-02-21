@@ -2,7 +2,7 @@ import click # 1-. lo primero que hacemos es importar click
 #5.- regresamos a pv.py y vamos a importar los comandos que declaramos en el modulo clients, esto lo hacemos
 #importando de clients los comandos y que se llamen cleints_commands
 from clients import commands as clients_commands
-
+#7.- venimos de commands.py y declaramos en una variable global el nombre del archivo que contendra los datos de los clientes
 CLIENTS_TABLE = '.clients.csv'
 
 #3.- para decirle a click cual es el punto de entrada usamos @click.group
@@ -15,6 +15,7 @@ def cli(ctx):
     """An application to manage clients, inventory, sales and produce reports."""
     #2.5- inicializamos este objeto contexto como un diccionario vacio
     ctx.obj = {}
+    # 8.- aqui añadimos la variable al contexto 
     ctx.obj['clients_table']=CLIENTS_TABLE
     
 
