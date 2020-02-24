@@ -1,4 +1,5 @@
 import csv
+import os
 
 from clients.models import Client
 #1.- declaramos nuestra clase ClientService 
@@ -26,3 +27,38 @@ class ClientService:
             reader=csv.DictReader(f,fieldnames=Client.schema())
             #9.- regresamos el reader utilizando la funcion gobal list()
             return list(reader)
+#10.- vamos a añadir un nuevo metodo para la actualizacion del cliente
+
+    def update_client(self,updated_client):
+        #11.- lo primero que tenemos que hacer es obtener una lista de los clientes,
+        #  y ya tenemos una funcion para eso list_clients(), para esto declaramos una 
+        #  variable don de vamos a guardar la lista
+        clients = self.list_clients()
+        #12.- ahora utilizamo una variable auxiliar para poder ciclar entre los clientes
+        # y unicamente tomar al cliente que se modifico y reemplazarlo y los demas
+        # clientes dejarlos comos estan
+        updated_clients=[]
+        for client in clients:
+            if client['uid']== updated_client.uid:
+                #tener en cuenta que cuando escribimos tenemos que hacerlo con to_dict()
+                updated_clients.append(updated_client.to_dict())
+            else:
+                updated_clients.append(client)
+        #13.- ahora lo que tenemos que hcer es mandarlo al disco y para eso utilizamos un
+        #  metodo privado _save_to_disk()
+        self._save_to_disk(updated_clients)
+
+    #14.- declaramos el metodo _save_to_disk(), iniciamos creando una tabla temporal de nuestros clientes
+    # despues con with open() abrimos el archivo temporal y creamos nuestro writer, despues solo escribimos
+    # todos los clientes con la funcion writerows
+    def _save_to_disk(clients):
+        tmp_table_name = self.table_name +'tmp'
+        with open(tmp_table_name) as f:
+            writer = csv.DictWriter(f,fieldnames=Client.schema())
+            writer.writerows(clients) 
+    
+        #ahora solo queda borrar el archivo original, luego renombrar el tmp y dejarlo con el nombre del original
+        os.remove(self.table_name)
+        os.rename(tmp_table_name,self.table_name)
+
+    
