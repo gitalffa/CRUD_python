@@ -80,12 +80,12 @@ def list(ctx):
 
 #5.-ahora usamos el decorador que acabamos de creas y lo llamamos con su metodo command() (que todavia no creamos) @clients.commmands()
 @clients.command()
+@click.argument('client_uid',type=str)
 #6.- y le pasmos tambien el contexto
 @click.pass_context
 #2.- definimos nuestros comandos basico de la aplicacion
-def update(ctx):
+def update(ctx,client_uid):
     """Update a client"""
-    client_uid='1e17bee6-7276-4cee-8e4b-72246017decb'
     client_service=ClientService(ctx.obj['clients_table'])
     client_list=client_service.list_clients()
     client=[client for client in client_list if client['uid']==client_uid]
