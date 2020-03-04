@@ -108,11 +108,15 @@ def _update_client_flow(client):
 #5.-ahora usamos el decorador que acabamos de creas y lo llamamos con su metodo command() (que todavia no creamos) @clients.commmands()
 @clients.command()
 #6.- y le pasmos tambien el contexto
+@click.argument('client_uid',type=str)
 @click.pass_context
 #2.- definimos nuestros comandos basico de la aplicacion
 def delete(ctx,client_uid):
     """Delete a client"""
-    pass
+    client_service = ClientService(ctx.obj['clients_table'])
+
+    if click.confirm('Are you sure you want to delete the client with uid: {}'.format(client_uid)):
+        client_service.delete_client(client_uid)
 
 #aqui creamos un alias de clients y lo llamamos all
 all=clients

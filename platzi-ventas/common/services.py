@@ -38,7 +38,7 @@ class PVService(abc.ABC):
         rows=self.list(schema)
         update_rows=[row for row in rows if row['uid']!= row_uid]
 
-        self._save_to_disk(self,rows,schema)
+        self._save_to_disk(update_rows,schema)
 
     
     def _save_to_disk(self,rows,schema):
